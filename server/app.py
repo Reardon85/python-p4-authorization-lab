@@ -87,12 +87,18 @@ class CheckSession(Resource):
 class MemberOnlyIndex(Resource):
     
     def get(self):
-        pass
+        if session['user_id']:
+            list = [article.to_dict() for article in Article.query.filter(Article.is_member_only == True).all()]
+            return make_response(list, 200)
+        return make_response({"error":"You are not authorized"}, 401)
 
 class MemberOnlyArticle(Resource):
     
     def get(self, id):
-        pass
+        if session['user_id']:
+            list =  Article.query.filter_by(id=id).first()
+            return make_response(list.to_dict(), 200)
+        return make_response({"error":"You are not authorized"}, 401)
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
 api.add_resource(IndexArticle, '/articles', endpoint='article_list')

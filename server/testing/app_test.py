@@ -54,7 +54,7 @@ class TestApp:
             })
 
             article_id = Article.query.with_entities(Article.id).first()[0]
-
+            print(article_id)
             response = client.get(f'/members_only_articles/{article_id}')
             assert(response.status_code == 200)
 
